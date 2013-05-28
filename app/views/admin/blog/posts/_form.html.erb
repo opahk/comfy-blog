@@ -13,8 +13,8 @@
   <% end %>
 <% end %>
 <%= form.text_field :tag_names, :label => link_to('Tags', admin_blog_tags_path) %>
-<%= form.text_area :excerpt, :data => { :rich_text => true }, :class => 'short' %>
-<%= form.text_area :content, :data => { :rich_text => true } %>
+<%= form.text_area :excerpt, :data => { :rich_text => true, :cm_mode => "text/html" }, :class => 'short' %>
+<%= form.text_area :content, :data => { :rich_text => true, :cm_mode => "text/html" } %>
 <%= form.text_field :published_at, :class => 'datetime' %>
 
 <% if defined?(ComfortableMexicanSofa) %>
@@ -24,14 +24,28 @@
   
   <%= cms_hook :blog_post, :locals => { :form => form } %>
   
-  <%= form.simple_field nil, nil, :class => 'submit_element' do %>
-    <%= form.check_box :is_published, :disable_builder => true %>
-    <%= form.label :is_published %>
-    <%= form.submit @post.new_record?? 'Create post' : 'Update post', :disable_builder => true %>
+  <%= form.simple_field nil, nil do %>
+    <label class="checkbox">
+      <%= form.check_box :is_published, :disable_builder => true %>
+      Published
+    </label>
   <% end %>
+
+  <div class="form-actions">
+    <%= form.submit @post.new_record?? 'Create post' : 'Update post', :disable_builder => true, :class => "btn btn-primary" %>
+  </div>
   
 <% else %>
-  <%= form.check_box :is_published %>
-  <%= form.submit @post.new_record?? 'Create post' : 'Update post' %>
-<% end %>
+  <div class="control-group">
+    <div class="controls">
+      <label class="checkbox">
+        <%= form.check_box :is_published %>
+        Published
+      </label>
+    </div>
+  </div>
 
+  <div class="form-actions">
+    <%= form.submit @post.new_record?? 'Create post' : 'Update post', :class => "btn btn-primary" %>
+  </div>
+<% end %>
