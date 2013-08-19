@@ -2,7 +2,7 @@ module ComfyBlog::Routing
 
   def self.admin
     Rails.application.routes.draw do
-      namespace :admin, :path => ComfyBlog.config.admin_route_prefix do
+      namespace :blog_admin, :path => ComfyBlog.config.admin_route_prefix do
         namespace :blog do
           resources :posts, :except => [:show] do
             unless ComfyBlog.disqus_enabled?
@@ -22,7 +22,7 @@ module ComfyBlog::Routing
 
   def self.content
     Rails.application.routes.draw do
-      scope ComfyBlog.config.public_route_prefix, :module => :blog do
+      namespace :blog_content, :path => ComfyBlog.config.public_route_prefix, :module => :blog do
         get '/'                   => 'posts#index', :as => :blog_posts
         get 'tag/:tag'            => 'posts#index', :as => :tagged_blog_posts
         get 'category/:category'  => 'posts#index', :as => :categorized_blog_posts
